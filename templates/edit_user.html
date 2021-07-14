@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Create User</h1>
+<form action="" method="POST">
+    <label for="first-name">First Name</label>
+    <input type="text" name="first-name" value="{{user.first_name}}" required>
+    <label for="last-name">Last Name</label>
+    <input type="text" name="last-name" value="{{user.last_name}}" required>
+    <label for="img-url">Image URL</label>
+    <input type="url" name="img-url" value="{{user.image_url}}">
+    <input type="submit" value="Save">
+    <button><a href="/users/{{user_id}}">Cancel</a></button>
+</form>
+{% endblock %}
