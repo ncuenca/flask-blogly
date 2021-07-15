@@ -10,6 +10,10 @@
     </figcaption>
 </figure>
 
+{% for tag in tags %}
+<p><a href='/tags/{{tag.id}}'>{{ tag.name }}</a></p>
+{% endfor %}
+
 <button 
     onclick="window.location.href='/users/{{post.user.id}}';" 
     class="btn btn-outline-primary">Go Back

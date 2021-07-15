@@ -2,7 +2,7 @@
 
 from flask import Flask, redirect, render_template, request
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db, connect_db, User, Post
+from models import db, connect_db, User, Post, Tag, PostTag
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly'
@@ -127,9 +127,9 @@ def show_post(post_id):
        Show buttons to edit and delete the post."""
     
     post = Post.query.get_or_404(post_id)
-
+    tags = post.tags
     
-    return render_template('post.html', post=post)
+    return render_template('post.html', post=post, tags=tags)
 
 
 @app.route('/posts/<int:post_id>/edit')
@@ -167,3 +167,59 @@ def delete_post(post_id):
     db.session.commit()
 
     return redirect(f'/users/{post.user_id}')
+
+@app.route('/tags')
+def tags_page():
+    '''Lists all tags, with links to the tag detail page.'''
+
+    tags = Tag.query.all()
+
+    return render_template('tags.html', tags=tags)
+
+@app.route('/tags/<int:tag_id>')
+def tag_page(tag_id):
+    '''Show detail about a tag. Have links to edit form and to delete.'''
+    
+    tag = Tag.query.get_or_404(tag_id)
+
+    return render_template('tag_info.html', tag=tag)
+
+@app.route('/tags/new')
+def create_tag_page():
+    '''Shows a form to add a new tag.'''
+    
+    return render_template('new_tag.html')
+
+@app.route('/tags/new', methods=['POST'])
+def post_new_tag():
+    '''Process add form, adds tag, and redirect to tag list.'''
+
+    tag = Tag(name=request.form['tag-name'])
+    db.session.add(tag)
+    db.session.commit()
+    
+    return redirect('/tags') 
+
+@app.route('/tags/<int:tag_id>/edit')
+def edit_tag_page(tag_id):
+    '''Show edit form for a tag'''
+    
+    tag = Tag.query.get_or_404(tag_id)
+
+    return render_template('edit_tag.html', tag=tag)
+
+@app.route('/tags/<int:tag_id>/edit', methods=['POST'])
+def post_tag_edit(tag_id):
+    '''Process edit form, edit tag, and redirects to the tags list.'''
+    
+    tag = Tag.query.get_or_404(tag_id)
+
+    return redirect('/tags')
+
+@app.route('/tags/<int:tag_id>/delete', methods=['POST'])
+def delete_tag(tag_id):
+    '''Process edit form, edit tag, and redirects to the tags list.'''
+    
+    tag = Tag.query.get_or_404(tag_id)
+
+    return redirect('/tags')

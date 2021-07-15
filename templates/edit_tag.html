@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Edit Tag</h1>
+<form method="POST">
+    <div class="form-group">
+        <label for="tag-name" class="form-label mt-4">Tag Name</label>
+        <input 
+        type="text" 
+        class="form-control" 
+        name="tag-name" 
+        id="tag-name" 
+        aria-describedby="tagNameHelp" 
+        value="{{ tag.name }}">
+    </div>
+    <button type="submit" class="btn btn-outline-success">save</button>
+    
+</form>
+
+<button 
+    onclick="window.location.href='/users/{{user.id}}';"  
+    class="btn btn-outline-secondary">Cancel
+</button>
+
+{% endblock %}
