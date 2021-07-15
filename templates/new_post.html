@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Add Post for {{user.first_name}} {{user.last_name}}</h1>
+<form action="" method="POST">
+    <div class="form-group">
+        <label for="title" class="form-label mt-4">Title</label>
+        <input 
+            type="text" 
+            class="form-control" 
+            name="title" 
+            id="title" 
+            aria-describedby="titleHelp" 
+            placeholder="Title">
+    </div>
+    <div class="form-group">
+        <label for="content" class="form-label mt-4">Content</label>
+        <textarea 
+            class="form-control" 
+            name="content"
+            id="content" 
+            rows="3" 
+            placeholder="Please Enter Your Content Here"></textarea>
+      </div>
+   
+    <button type="submit" class="btn btn-outline-success">Add</button>
+    
+</form>
+<form action = "/users/{{user.id}}">
+    <!-- TODO: anchor tag -->
+    <button type="submit" class="btn btn-outline-secondary">Cancel</button>
+</form>
+{% endblock %}

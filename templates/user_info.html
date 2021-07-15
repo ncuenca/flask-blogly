@@ -28,4 +28,22 @@
     <!-- TODO: anchor tag -->
     <button type="submit" class="btn btn-outline-primary">Go Back</button>
 </form>
+<div>
+    <h3>Posts</h3>
+    <ul>
+        {% for post in posts %}
+        <li><a href="/posts/{{post.id}}">{{post.title}}</a></li>
+        {% endfor %}
+    </ul>
+    
+    <button 
+        onclick="window.location.href='/users/{{user.id}}/posts/new';"
+        type="submit" 
+        class="btn btn-outline-warning" >
+        Add Post
+    </button>
+
+
+</div>
+
 {% endblock %}

@@ -2,7 +2,7 @@
 
 from flask import Flask, redirect, render_template, request
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db, connect_db, User
+from models import db, connect_db, User, Post
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly'
@@ -54,8 +54,9 @@ def get_user(user_id):
        Have a button to get to their edit page, and to delete the user."""
 
     user = User.query.get_or_404(user_id)
+    posts = user.posts
 
-    return render_template('user_info.html', user=user)
+    return render_template('user_info.html', user=user, posts=posts)
 
 @app.route('/users/<int:user_id>/edit')
 def edit_user(user_id):
@@ -94,3 +95,60 @@ def delete_user_post(user_id):
     db.session.commit()
 
     return redirect('/users')
+
+@app.route('/users/<int:user_id>/posts/new')
+def new_post_page(user_id):
+    """Direct to the page for creating new post"""
+
+    user = User.query.get_or_404(user_id)
+
+
+    return render_template('new_post.html', user=user)
+
+
+@app.route('/users/<int:user_id>/posts/new', methods=["POST"])
+def create_post(user_id):
+    """Create a new post and update database"""
+
+    user = User.query.get_or_404(user_id)
+    title = request.form["title"]
+    content = request.form["content"]
+
+    post = Post(title=title, content=content, user_id=user.id)
+    db.session.add(post)
+    db.session.commit()
+
+    return redirect(f'/users/{user.id}')
+
+
+@app.route('/posts/<int:post_id>')
+def show_post(post_id):
+    """Show a post.
+       Show buttons to edit and delete the post."""
+
+    
+    return render_template('post.html')
+
+
+@app.route('/posts/<int:post_id>/edit')
+def edit_post_page(post_id):
+    """Show form to edit a post, and to cancel (back to user page)."""
+
+
+    return render_template('edit_post.html')
+
+
+@app.route('/posts/<int:post_id>/edit', methods=["POST"])
+def edited_post(post_id):
+    """Handle editing of a post. Redirect back to the post view."""
+
+
+    return redirect('/posts/<int:post_id>')
+
+
+@app.route('/posts/<int:post_id>/delete', methods=['POST'])
+def delete_post(post_id):
+    """Delete the post."""
+
+
+    return redirect('/users/somewhere')
