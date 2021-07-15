@@ -11,9 +11,13 @@
 </figure>
 
 {% for tag in tags %}
-<p><a href='/tags/{{tag.id}}'>{{ tag.name }}</a></p>
+<span 
+    onclick="window.location.href='/tags/{{tag.id}}';" 
+    id="badge"
+    class="badge bg-primary">{{ tag.name }}</span>
 {% endfor %}
 
+<br>
 <button 
     onclick="window.location.href='/users/{{post.user.id}}';" 
     class="btn btn-outline-primary">Go Back

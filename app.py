@@ -9,6 +9,12 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 
+# from flask_debugtoolbar import DebugToolbarExtension
+# app.config['SECRET_KEY'] = "SECRET!"
+# debug = DebugToolbarExtension(app)
+
+
+
 connect_db(app)
 db.create_all()
 
@@ -101,9 +107,10 @@ def new_post_page(user_id):
     """Direct to the page for creating new post"""
 
     user = User.query.get_or_404(user_id)
+    tags = Tag.query.all()
 
 
-    return render_template('new_post.html', user=user)
+    return render_template('new_post.html', user=user, tags=tags)
 
 
 @app.route('/users/<int:user_id>/posts/new', methods=["POST"])
@@ -113,8 +120,15 @@ def create_post(user_id):
     user = User.query.get_or_404(user_id)
     title = request.form["title"]
     content = request.form["content"]
+    tag_ids = request.form.getlist("tag-name")
 
     post = Post(title=title, content=content, user_id=user.id)
+
+    post.tags = []
+    for tag_id in tag_ids:
+        tag = Tag.query.get(tag_id)
+        post.tags.append(tag)
+
     db.session.add(post)
     db.session.commit()
 
@@ -137,8 +151,9 @@ def edit_post_page(post_id):
     """Show form to edit a post, and to cancel (back to user page)."""
     
     post = Post.query.get_or_404(post_id)
+    tags = Tag.query.all()
 
-    return render_template('edit_post.html', post=post)
+    return render_template('edit_post.html', post=post, tags=tags)
 
 
 @app.route('/posts/<int:post_id>/edit', methods=["POST"])
@@ -149,7 +164,13 @@ def edited_post(post_id):
 
     title = request.form["title"]
     content = request.form["content"]
-    
+    tag_ids = request.form.getlist("tag-name")
+
+    post.tags = []
+    for tag_id in tag_ids:
+        tag = Tag.query.get(tag_id)
+        post.tags.append(tag)
+
     post.title = title
     post.content= content
 
@@ -205,6 +226,7 @@ def edit_tag_page(tag_id):
     '''Show edit form for a tag'''
     
     tag = Tag.query.get_or_404(tag_id)
+    
 
     return render_template('edit_tag.html', tag=tag)
 
@@ -213,6 +235,10 @@ def post_tag_edit(tag_id):
     '''Process edit form, edit tag, and redirects to the tags list.'''
     
     tag = Tag.query.get_or_404(tag_id)
+    name = request.form["tag-name"]
+    tag.name = name
+
+    db.session.commit()
 
     return redirect('/tags')
 
@@ -221,5 +247,8 @@ def delete_tag(tag_id):
     '''Process edit form, edit tag, and redirects to the tags list.'''
     
     tag = Tag.query.get_or_404(tag_id)
+
+    db.session.delete(tag)
+    db.session.commit()
 
     return redirect('/tags')
