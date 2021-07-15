@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>{{post.title}}</h1>
+<figure>
+    <blockquote class="blockquote">
+        <p class="mb-0">{{post.content}}</p>
+    </blockquote>
+    <figcaption class="blockquote-footer">
+        <cite title="Source Title">{{post.user.first_name}} {{post.user.last_name}}</cite>
+    </figcaption>
+</figure>
+
+<button onclick="window.location.href='/users/{{post.user.id}}';" class="btn btn-outline-primary">Go Back</button>
+<form>
+    <button 
+        type="submit" 
+        class="btn btn-outline-danger" 
+        formaction="/posts/{{post.id}}/delete" 
+        formmethod="POST">
+        Delete
+    </button>
+    <button 
+        type="submit" 
+        class="btn btn-outline-warning" 
+        formaction="/posts/{{post.id}}/edit" 
+        formmethod="GET">
+        Edit
+    </button>
+</form>
+
+{% endblock %}
