@@ -8,9 +8,11 @@
 <h5><a href="/users/{{user.id}}">{{ user.first_name }}</a></h5>
 {% endfor %}
 
-<form action="/users/new">
-    <!-- TODO: make HREF form not necessary -->
-    <button type="submit" class="btn btn-outline-success">Add User</button>
-</form>
+
+<button 
+    onclick="window.location.href='/users/new';" 
+    class="btn btn-outline-success">Add User
+</button>
+
 
 {% endblock %}

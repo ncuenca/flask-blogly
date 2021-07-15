@@ -25,8 +25,10 @@
     <button type="submit" class="btn btn-outline-success">Add</button>
     
 </form>
-<form action = "/users/{{user.id}}">
-    <!-- TODO: anchor tag -->
-    <button type="submit" class="btn btn-outline-secondary">Cancel</button>
-</form>
+
+<button 
+    onclick="window.location.href='/users/{{user.id}}';" 
+    class="btn btn-outline-secondary">Cancel
+</button>
+
 {% endblock %}
