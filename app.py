@@ -24,7 +24,7 @@ def users_page():
        Make these links to view the detail page for the user.
        Have a link here to the new-user form."""
 
-    users = User.query.all() # TODO sorting through SQLAlchemy
+    users = User.query.order_by('last_name').all()
     return render_template('users.html', users=users)
 
 @app.route('/users/new')
