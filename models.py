@@ -25,7 +25,8 @@ class User(db.Model):
     last_name = db.Column(db.Text,
                     nullable=False)
     image_url = db.Column(db.Text,
-                    nullable=False) #empty strings - do something about it TODO
+                    nullable=False,
+                    default='https://www.adamsdrafting.com/wp/wp-content/uploads/2018/06/More-Grumpy-Cat.jpg')
 
 class Post(db.Model):
     """Create Post instance"""
@@ -41,7 +42,7 @@ class Post(db.Model):
                         nullable=False)
     created_at = db.Column(db.DateTime,
                            nullable=False,
-                           default=datetime.now())
+                           default=datetime.now)
     user_id = db.Column(db.Integer,
                         db.ForeignKey('users.id'))
 

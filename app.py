@@ -39,7 +39,7 @@ def new_user_post():
 
     first_name = request.form["first-name"]
     last_name = request.form["last-name"]
-    image_url = request.form["img-url"] #TODO: deal with empty strings
+    image_url = request.form["img-url"] or None
 
     user = User(first_name=first_name, last_name=last_name, image_url=image_url)
 
