@@ -1,14 +1,42 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>Create User</h1>
-<form action="" method="POST">
-    <label for="first-name">First Name</label>
-    <input type="text" name="first-name" value="{{user.first_name}}" required>
-    <label for="last-name">Last Name</label>
-    <input type="text" name="last-name" value="{{user.last_name}}" required>
-    <label for="img-url">Image URL</label>
-    <input type="url" name="img-url" value="{{user.image_url}}">
-    <input type="submit" value="Save">
-    <button><a href="/users/{{user_id}}">Cancel</a></button>
+<h1>Edit User</h1>
+<form method="POST">
+    <div class="form-group">
+        <label for="first-name-input" class="form-label mt-4">First Name</label>
+        <input 
+            type="text" 
+            class="form-control" 
+            name="first-name" 
+            id="first-name-input" 
+            aria-describedby="firstNameHelp" 
+            value="{{user.first_name}}">
+    </div>
+    <div class="form-group">
+        <label for="last-name-input" class="form-label mt-4">Last Name</label>
+        <input 
+            type="text" 
+            class="form-control" 
+            name="last-name" 
+            id="last-name-input" 
+            aria-describedby="lastNameHelp" 
+            value="{{user.last_name}}">
+    </div>
+    <div class="form-group">
+        <label for="image-url-input" class="form-label mt-4">Image URL</label>
+        <input 
+            type="text" 
+            class="form-control" 
+            name="img-url" 
+            id="image-url-input" 
+            aria-describedby="imageURLHelp" 
+            value="{{user.image_url}}">
+    </div>
+    <button type="submit" class="btn btn-outline-success">save</button>
+    
+</form>
+<form action = "/users/{{user.id}}">
+    <!-- TODO: anchor tag -->
+    <button type="submit" class="btn btn-outline-secondary">Cancel</button>
 </form>
 {% endblock %}

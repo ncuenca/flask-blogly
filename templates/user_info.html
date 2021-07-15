@@ -2,11 +2,30 @@
 {% block content %}
 <h1>{{user.first_name}} {{user.last_name}}</h1>
 <img src="{{user.image_url}}">
-<form action="/users/{{user.id}}/edit">
-    <button>Edit</button>
+<!-- <form action="/users/{{user.id}}/edit">
+    <button type="submit" class="btn btn-outline-warning">Edit</button>
 </form>
 <form action="/users/{{user.id}}/delete", method="POST">
-    <button>Delete</button>
+    <button type="submit" class="btn btn-outline-danger">Delete</button>
+</form> -->
+<form>
+    <button 
+        type="submit" 
+        class="btn btn-outline-danger" 
+        formaction="/users/{{user.id}}/delete" 
+        formmethod="POST">
+        Delete
+    </button>
+    <button 
+        type="submit" 
+        class="btn btn-outline-warning" 
+        formaction="/users/{{user.id}}/edit" 
+        formmethod="GET">
+        Edit
+    </button>
 </form>
-<button><a href="/users">Go Back</a></button>
+<form action="/users">
+    <!-- TODO: anchor tag -->
+    <button type="submit" class="btn btn-outline-primary">Go Back</button>
+</form>
 {% endblock %}

@@ -1,3 +1,5 @@
+"""Models for Blogly."""
+
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
@@ -8,7 +10,7 @@ def connect_db(app):
     db.app = app
     db.init_app(app)
 
-"""Models for Blogly."""
+
 class User(db.Model):
     """User."""
 
@@ -22,4 +24,4 @@ class User(db.Model):
     last_name = db.Column(db.Text,
                     nullable=False)
     image_url = db.Column(db.Text,
-                    nullable=False)
+                    nullable=False) #empty strings - do something about it TODO

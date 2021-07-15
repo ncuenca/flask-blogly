@@ -15,19 +15,22 @@ db.create_all()
 @app.route('/')
 def homepage():
     """Redirect to list of users."""
+
     return redirect('/users')
 
 @app.route('/users')
-def user_page():
+def users_page():
     """Show all users.
        Make these links to view the detail page for the user.
        Have a link here to the new-user form."""
-    users = User.query.all()
+
+    users = User.query.all() # TODO sorting through SQLAlchemy
     return render_template('users.html', users=users)
 
 @app.route('/users/new')
 def new_user():
     """Show an add form for users."""
+
     return render_template('new_user.html')
 
 @app.route('/users/new', methods=['POST'])
@@ -36,9 +39,10 @@ def new_user_post():
 
     first_name = request.form["first-name"]
     last_name = request.form["last-name"]
-    image_url = request.form["img-url"]
+    image_url = request.form["img-url"] #TODO: deal with empty strings
 
     user = User(first_name=first_name, last_name=last_name, image_url=image_url)
+
     db.session.add(user)
     db.session.commit()
 
@@ -49,9 +53,9 @@ def get_user(user_id):
     """Show information about the given user.
        Have a button to get to their edit page, and to delete the user."""
 
-    user = User.query.get(user_id)
+    user = User.query.get_or_404(user_id)
 
-    return render_template('user_info.html', user_id=user_id, user=user)
+    return render_template('user_info.html', user=user)
 
 @app.route('/users/<int:user_id>/edit')
 def edit_user(user_id):
@@ -59,18 +63,20 @@ def edit_user(user_id):
        Have a cancel button that returns to the detail page for a user, and 
        a save button that updates the user."""
     
-    user = User.query.get(user_id)
+    user = User.query.get_or_404(user_id)
 
-    return render_template('edit_user.html', user_id=user_id, user=user)
+    return render_template('edit_user.html', user=user)
 
 @app.route('/users/<int:user_id>/edit', methods=['POST'])
 def edit_user_post(user_id):
     """Process the edit form, returning the user to the /users page."""
 
-    user = User.query.get(user_id)
+    user = User.query.get_or_404(user_id)
+
     first_name = request.form["first-name"]
     last_name = request.form["last-name"]
     image_url = request.form["img-url"]
+    
     user.first_name = first_name
     user.last_name = last_name
     user.image_url = image_url
@@ -83,7 +89,7 @@ def edit_user_post(user_id):
 def delete_user_post(user_id):
     """Delete the user."""
 
-    user = User.query.get(user_id)
+    user = User.query.get_or_404(user_id)
     db.session.delete(user)
     db.session.commit()
 

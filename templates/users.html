@@ -1,10 +1,16 @@
 {% extends 'base.html' %}
+
 {% block content %}
+<!-- Users Template. Used in testing -->
 <h1>Users</h1>
+
 {% for user in users %}
-<p><a href="/users/{{user.id}}">{{ user.first_name }}</a></p>
+<h5><a href="/users/{{user.id}}">{{ user.first_name }}</a></h5>
 {% endfor %}
+
 <form action="/users/new">
-<button>Add User</button>
+    <!-- TODO: make HREF form not necessary -->
+    <button type="submit" class="btn btn-outline-success">Add User</button>
 </form>
+
 {% endblock %}
