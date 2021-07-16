@@ -1,5 +1,6 @@
 """Blogly application."""
 
+from re import U
 from flask import Flask, redirect, render_template, request
 from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db, User, Post, Tag, PostTag
@@ -21,8 +22,10 @@ db.create_all()
 @app.route('/')
 def homepage():
     """Redirect to list of users."""
+    
+    posts = Post.query.all()
 
-    return redirect('/users')
+    return render_template('posts.html', posts=posts)
 
 @app.route('/users')
 def users_page():
@@ -97,6 +100,11 @@ def delete_user_post(user_id):
     """Delete the user."""
 
     user = User.query.get_or_404(user_id)
+    posts = Post.query.filter_by(user_id=user_id)
+    
+    for post in posts:
+        db.session.delete(post)
+
     db.session.delete(user)
     db.session.commit()
 
@@ -124,7 +132,7 @@ def create_post(user_id):
 
     post = Post(title=title, content=content, user_id=user.id)
 
-    post.tags = []
+    # post.tags = []
     for tag_id in tag_ids:
         tag = Tag.query.get(tag_id)
         post.tags.append(tag)
@@ -206,7 +214,7 @@ def tag_page(tag_id):
     return render_template('tag_info.html', tag=tag)
 
 @app.route('/tags/new')
-def create_tag_page():
+def render_new_tag_page():
     '''Shows a form to add a new tag.'''
     
     return render_template('new_tag.html')
@@ -226,7 +234,6 @@ def edit_tag_page(tag_id):
     '''Show edit form for a tag'''
     
     tag = Tag.query.get_or_404(tag_id)
-    
 
     return render_template('edit_tag.html', tag=tag)
 

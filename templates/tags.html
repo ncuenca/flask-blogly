@@ -2,11 +2,11 @@
 {% block content %}
 <h1>Tags</h1>
 
-<ul>
-    {% for tag in tags %}
-    <li><a href='/tags/{{tag.id}}'>{{ tag.name }}</a></li>
-    {% endfor %}
-</ul>
+
+{% for tag in tags %}
+<h5><a href='/tags/{{tag.id}}'>{{ tag.name }}</a></h5>
+{% endfor %}
+
 
 <button 
     onclick="window.location.href='/tags/new';" 

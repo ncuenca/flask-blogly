@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Users Template. Used in testing -->
+<h1>Posts</h1>
+
+{% for post in posts %}
+<h5><a href="/posts/{{post.id}}">{{ post.title }}</a></h5>
+<figcaption class="blockquote-footer">
+    <cite >
+        {{ post.user.first_name }} {{ post.user.last_name }} {{ post.created_at.strftime("%m/%d/%Y %H:%M") }}
+    </cite>
+</figcaption>
+{% endfor %}
+
+
+
+{% endblock %}
